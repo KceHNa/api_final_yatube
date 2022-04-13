@@ -47,7 +47,6 @@ class FollowViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
     """
     Создать подписку (подписаться), вернуть список подписчиков.
     """
-    queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = (filters.SearchFilter,)
@@ -55,7 +54,7 @@ class FollowViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
 
     def get_queryset(self):
         user = self.request.user
-        return Follow.objects.filter(user=user)
+        return Follow.objects.filter(user__username=user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
